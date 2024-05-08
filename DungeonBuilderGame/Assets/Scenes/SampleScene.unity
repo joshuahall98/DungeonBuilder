@@ -428,8 +428,7 @@ MonoBehaviour:
   playerPrefabs:
   - {fileID: 6486253245149023461, guid: 58fffbc7dd8dbc64b826ad496bcd029a, type: 3}
   - {fileID: 6258785875043401296, guid: b22d41aaccb362c4ba253b1dfca3ae47, type: 3}
-  colors: []
-  maxPlayers: 0
+  maxPlayers: 2
 --- !u!4 &1500456036
 Transform:
   m_ObjectHideFlags: 0

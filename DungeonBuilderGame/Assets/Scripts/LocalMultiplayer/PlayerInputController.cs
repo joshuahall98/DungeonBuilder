@@ -4,22 +4,24 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 
-public class PlayerInputController : MonoBehaviour
+public class PlayerInputController : MonoBehaviour, ILocalMultiplayer
 {
-    Controls controls;
+     Controls controls;
+
+    public void NewUser(InputUser user)
+    {
+        var controlsTest = user.actions;
+
+        controls = (Controls)user.actions;
+        
+        controls.PlayerControls.DoThing.performed += LogResult;
+
+        EnablePlayerControls();
+    }
 
     void LogResult(InputAction.CallbackContext input)
     {
         Debug.Log(input.control.device);
-    }
-
-    public void SetupData(InputUser user)
-    {
-        controls = (Controls)user.actions;
-
-        controls.PlayerControls.DoThing.performed += LogResult;
-
-        EnablePlayerControls();
     }
 
     public void EnablePlayerControls()
@@ -36,6 +38,4 @@ public class PlayerInputController : MonoBehaviour
     {
         DisablePlayerControls();
     }
-
-
 }
