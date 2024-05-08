@@ -406,7 +406,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1500456036}
   - component: {fileID: 1500456034}
-  - component: {fileID: 1500456037}
   m_Layer: 0
   m_Name: PlayerLobby
   m_TagString: Untagged
@@ -430,6 +429,8 @@ MonoBehaviour:
   - {fileID: 6486253245149023461, guid: 58fffbc7dd8dbc64b826ad496bcd029a, type: 3}
   - {fileID: 6258785875043401296, guid: b22d41aaccb362c4ba253b1dfca3ae47, type: 3}
   maxPlayers: 2
+  gamepadControlScheme: Gamepad
+  keyboardAndMouseControlScheme: KBM
 --- !u!4 &1500456036
 Transform:
   m_ObjectHideFlags: 0
@@ -445,15 +446,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1500456037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500456033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3bd68a2a1123c04793b62734f521c7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

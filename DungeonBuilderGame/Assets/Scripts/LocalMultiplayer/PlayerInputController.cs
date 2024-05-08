@@ -8,6 +8,13 @@ public class PlayerInputController : MonoBehaviour, ILocalMultiplayer
 {
      Controls controls;
 
+    public IInputActionCollection UserControls()
+    {
+        Controls controls = new Controls();
+
+        return controls;
+    }
+
     public void NewUser(InputUser user)
     {
         var controlsTest = user.actions;
