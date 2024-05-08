@@ -12,7 +12,7 @@ public class PlayerInputActions : MonoBehaviour, IInputActions
 
     public string KeyboardAndMouseControlScheme()
     {
-        throw new System.NotImplementedException();
+        return "KBM";
     }
 
     public IInputActionCollection UserControls()
