@@ -13,13 +13,13 @@ public class LocalMultiplayerLobby : MonoBehaviour
     [SerializeField] int maxPlayers;
     [SerializeField] string gamepadControlScheme;
     [SerializeField] string keyboardAndMouseControlScheme;
-    List<InputDevice> inputDevices;
+    List<InputDevice> previousInputDevices;
     InputAction joinAction;
     int joinedCount;
 
     void Awake()
     {
-        inputDevices = new List<InputDevice>();
+        previousInputDevices = new List<InputDevice>();
 
         // Bind joinAction to any button press.
         joinAction = new InputAction(binding: "/*/<button>");
@@ -35,30 +35,43 @@ public class LocalMultiplayerLobby : MonoBehaviour
     {
         var device = context.control.device;
 
-        if (inputDevices.Contains(device))
+        var inputDevices = new List<InputDevice>();
+
+        if (previousInputDevices.Contains(device))
             return;
-
-        InputUser user = InputUser.PerformPairingWithDevice(device);
-
-        var newPlayer = Instantiate(playerPrefabs[joinedCount]);
-
-        var userInputs = newPlayer.GetComponent<ILocalMultiplayer>().UserControls();
-
-        user.AssociateActionsWithUser(userInputs);
 
         string controlScheme = gamepadControlScheme;
 
         if (device is Mouse || device is Keyboard)
         {
             controlScheme = keyboardAndMouseControlScheme;
+            previousInputDevices.Add(Keyboard.current);
+            previousInputDevices.Add(Mouse.current);
             inputDevices.Add(Keyboard.current);
             inputDevices.Add(Mouse.current);
         }
         else
         {
+            previousInputDevices.Add(device);
             inputDevices.Add(device);
         }
-            
+
+        InputUser user = InputUser.PerformPairingWithDevice(device);
+
+        if(inputDevices.Count > 1)
+        {
+            foreach (InputDevice inputDevice in inputDevices)
+            {
+                InputUser.PerformPairingWithDevice(inputDevice, user);
+            }
+        }
+        
+        var newPlayer = Instantiate(playerPrefabs[joinedCount]);
+
+        var userInputs = newPlayer.GetComponent<ILocalMultiplayer>().UserControls();
+
+        user.AssociateActionsWithUser(userInputs);
+
         user.ActivateControlScheme(controlScheme);
 
         userInputs.Enable();
