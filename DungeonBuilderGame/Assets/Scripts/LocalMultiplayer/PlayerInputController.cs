@@ -15,11 +15,9 @@ public class PlayerInputController : MonoBehaviour, ILocalMultiplayer
         return controls;
     }
 
-    public void NewUser(InputUser user)
+    public void NewUser(IInputActionCollection inputActions)
     {
-        var controlsTest = user.actions;
-
-        controls = (Controls)user.actions;
+        controls = (Controls)inputActions;
         
         controls.PlayerControls.DoThing.performed += LogResult;
 

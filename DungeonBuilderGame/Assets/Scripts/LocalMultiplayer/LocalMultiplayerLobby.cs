@@ -63,7 +63,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         userInputs.Enable();
 
-        newPlayer.GetComponent<ILocalMultiplayer>().NewUser(user);
+        newPlayer.GetComponent<ILocalMultiplayer>().NewUser(userInputs);
 
         joinedCount++;
 
