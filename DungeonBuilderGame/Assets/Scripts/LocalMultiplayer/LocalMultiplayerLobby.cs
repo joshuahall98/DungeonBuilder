@@ -13,14 +13,12 @@ public class LocalMultiplayerLobby : MonoBehaviour
     [SerializeField] int maxPlayers;
     [SerializeField] string gamepadControlScheme;
     [SerializeField] string keyboardAndMouseControlScheme;
-    List<InputDevice> previousInputDevices;
+    List<InputDevice> previousInputDevices = new List<InputDevice>();
     InputAction joinAction;
     int joinedCount;
 
     void Awake()
     {
-        previousInputDevices = new List<InputDevice>();
-
         // Bind joinAction to any button press.
         joinAction = new InputAction(binding: "/*/<button>");
         joinAction.performed += JoinPlayer;
@@ -56,14 +54,11 @@ public class LocalMultiplayerLobby : MonoBehaviour
             inputDevices.Add(device);
         }
 
-        InputUser user = InputUser.PerformPairingWithDevice(device);
-
-        if(inputDevices.Count > 1)
+        InputUser user = InputUser.CreateUserWithoutPairedDevices();
+        
+        foreach (InputDevice inputDevice in inputDevices)
         {
-            foreach (InputDevice inputDevice in inputDevices)
-            {
-                InputUser.PerformPairingWithDevice(inputDevice, user);
-            }
+            InputUser.PerformPairingWithDevice(inputDevice, user);
         }
         
         var newPlayer = Instantiate(playerPrefabs[joinedCount]);
