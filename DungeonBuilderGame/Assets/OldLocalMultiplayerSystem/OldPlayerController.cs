@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Users;
 
 //https://forum.unity.com/threads/manual-local-multiplayer-using-inputdevices.1295664/
 
-public class PlayerController : MonoBehaviour
+public class OldPlayerController : MonoBehaviour
 {
     /*public Controls controls;
 

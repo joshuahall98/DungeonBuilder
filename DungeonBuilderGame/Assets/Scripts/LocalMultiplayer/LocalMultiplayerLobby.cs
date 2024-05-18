@@ -17,8 +17,12 @@ public class LocalMultiplayerLobby : MonoBehaviour
     InputAction joinAction;
     int joinedCount;
 
+    IUserControls userControls;
+
     void Awake()
     {
+        userControls = GetComponent<IUserControls>();
+
         // Bind joinAction to any button press.
         joinAction = new InputAction(binding: "/*/<button>");
         joinAction.performed += JoinPlayer;
@@ -60,10 +64,8 @@ public class LocalMultiplayerLobby : MonoBehaviour
         {
             InputUser.PerformPairingWithDevice(inputDevice, user);
         }
-        
-        var newPlayer = Instantiate(playerPrefabs[joinedCount]);
 
-        var userInputs = newPlayer.GetComponent<ILocalMultiplayer>().UserControls();
+        var userInputs = userControls.CreateNewUserControls();//newPlayer.GetComponent<ILocalMultiplayer>().UserControls();
 
         user.AssociateActionsWithUser(userInputs);
 
@@ -71,7 +73,9 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         userInputs.Enable();
 
-        newPlayer.GetComponent<ILocalMultiplayer>().NewUser(userInputs);
+        var newPlayer = Instantiate(playerPrefabs[joinedCount]);
+
+        newPlayer.GetComponent<ILocalMultiplayer>().AssignNewUserInputActions(userInputs);
 
         joinedCount++;
 

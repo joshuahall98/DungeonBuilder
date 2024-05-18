@@ -8,14 +8,7 @@ public class PlayerInputController : MonoBehaviour, ILocalMultiplayer
 {
      Controls controls;
 
-    public IInputActionCollection UserControls()
-    {
-        Controls controls = new Controls();
-
-        return controls;
-    }
-
-    public void NewUser(IInputActionCollection inputActions)
+    public void AssignNewUserInputActions(IInputActionCollection inputActions)
     {
         controls = (Controls)inputActions;
         
@@ -26,7 +19,8 @@ public class PlayerInputController : MonoBehaviour, ILocalMultiplayer
 
     void LogResult(InputAction.CallbackContext input)
     {
-        Debug.Log(input.control.device);
+        //Debug.Log(input.control.device);
+        PlayerManager.playerManagerInstance.WhatIsOtherPlayerHealth();
     }
 
     public void EnablePlayerControls()

@@ -155,7 +155,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6486253245149023461, guid: 58fffbc7dd8dbc64b826ad496bcd029a, type: 3}
       propertyPath: m_Name
-      value: Player4
+      value: Player2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7734103511635768944, guid: 58fffbc7dd8dbc64b826ad496bcd029a, type: 3}
+      propertyPath: playerDataContainer.playerName
+      value: Player2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7734103511635768944, guid: 58fffbc7dd8dbc64b826ad496bcd029a, type: 3}
+      propertyPath: playerDataContainer.playerHealth
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects:

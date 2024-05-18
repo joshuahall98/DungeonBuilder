@@ -7,9 +7,7 @@ using UnityEngine.InputSystem.Users;
 public interface ILocalMultiplayer
 {
     /// <summary>
-    /// This method returns the InputActionCollection generated from the InputActionMap
+    /// This method accepts an Input Action Collection and assigns it to the newly created user
     /// </summary>
-    public IInputActionCollection UserControls();
-
-    public void NewUser(IInputActionCollection InputActions);
+    public void AssignNewUserInputActions(IInputActionCollection InputActions);
 }
