@@ -10,18 +10,19 @@ using UnityEngine.SocialPlatforms;
 public class LocalMultiplayerLobby : MonoBehaviour
 {
     [SerializeField] List<GameObject> playerPrefabs = new List<GameObject>();
-    [SerializeField] int maxPlayers;
     [SerializeField] string gamepadControlScheme;
     [SerializeField] string keyboardAndMouseControlScheme;
     List<InputDevice> previousInputDevices = new List<InputDevice>();
     InputAction joinAction;
     int joinedCount;
+    int maxPlayers;
 
     IUserControls userControls;
 
     void Awake()
     {
         userControls = GetComponent<IUserControls>();
+        maxPlayers = playerPrefabs.Count;
 
         // Bind joinAction to any button press.
         joinAction = new InputAction(binding: "/*/<button>");
