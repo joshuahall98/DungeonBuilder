@@ -11,6 +11,8 @@ public class PlayerDataController : MonoBehaviour
     {
         public int userID = 0;
         public float playerHealth = 50;
+        public PlayerInputController controller;
+        public Vector3Int currentTile = new Vector3Int(0,0,0);
     }
 
     [SerializeField] PlayerDataContainer playerDataContainer = new PlayerDataContainer();
@@ -19,14 +21,15 @@ public class PlayerDataController : MonoBehaviour
     void Start()
     {
         PlayerManager.playerManagerInstance.InsertNewPlayerIntoManager(this);
+        playerDataContainer.controller = GetComponent<PlayerInputController>();
     }
 
-    public void AssignInputUserData(InputUser user)
+    public void SetInputUserData(InputUser user)
     {
         playerDataContainer.userID = (int)user.id;
     }
 
-    public float CheckPlayerHealth()
+    public float GetPlayerHealth()
     {
         return playerDataContainer.playerHealth;
     }
@@ -34,5 +37,20 @@ public class PlayerDataController : MonoBehaviour
     public int GetPlayerName()
     {
         return playerDataContainer.userID;
+    }
+
+    public PlayerInputController GetPlayerInputController()
+    {
+        return playerDataContainer.controller;
+    }
+
+    public void SetPlayerLocation(Vector3Int newLocation)
+    {
+        playerDataContainer.currentTile = newLocation;
+    }
+
+    public Vector3Int GetPlayerLocation()
+    {
+        return playerDataContainer.currentTile;
     }
 }

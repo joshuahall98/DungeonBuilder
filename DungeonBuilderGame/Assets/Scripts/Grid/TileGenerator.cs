@@ -13,7 +13,7 @@ public class TileGenerator : MonoBehaviour
         GenerateTile(new Vector3Int(0, 0, 0), startingTile);
     }
 
-    private void GenerateTile(Vector3Int gridLocation, GameObject tileToLoad)
+    public void GenerateTile(Vector3Int gridLocation, GameObject tileToLoad)
     {
         var worldPosition = grid.GetCellCenterWorld(gridLocation);
         Instantiate(tileToLoad, worldPosition, Quaternion.identity);

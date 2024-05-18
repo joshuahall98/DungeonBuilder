@@ -8,8 +8,8 @@ public class LocalPlayerCreation : MonoBehaviour, ILocalMultiplayer
 {
     public void AssignNewUserInputActions(IInputActionCollection inputActions, InputUser user)
     {
-        GetComponent<PlayerInputController>().AssignInputActions(inputActions);
+        GetComponent<PlayerInputController>().SetInputActions(inputActions);
 
-        GetComponent<PlayerDataController>().AssignInputUserData(user);
+        GetComponent<PlayerDataController>().SetInputUserData(user);
     }
 }

@@ -23,18 +23,27 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    public List<float> WhatIsOtherPlayerHealth()
+    public void DisableAllPLayerLobbyControlsAndEnableAllPlayerControls()
+    {
+        foreach (var controller in playerDataControllers)
+        {
+            controller.GetPlayerInputController().DisableLobbyControls();
+            controller.GetPlayerInputController().DisableLobbyControls(); 
+        }
+    }
+
+    /*public List<float> WhatIsOtherPlayerHealth()
     {
         var listOfHealth = new List<float>();
 
         foreach (var controller in playerDataControllers)
         {
-            var result =  controller.CheckPlayerHealth();
+            var result =  controller.GetPlayerHealth();
             listOfHealth.Add(result);
             var name = controller.GetPlayerName();
             Debug.Log($"Player {name} has {result} HP");
         }
 
         return listOfHealth;
-    }
+    }*/
 }
