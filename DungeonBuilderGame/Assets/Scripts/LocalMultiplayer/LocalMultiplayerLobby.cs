@@ -66,7 +66,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
             InputUser.PerformPairingWithDevice(inputDevice, user);
         }
 
-        var userInputs = userControls.CreateNewUserControls();//newPlayer.GetComponent<ILocalMultiplayer>().UserControls();
+        var userInputs = userControls.CreateNewUserControls();
 
         user.AssociateActionsWithUser(userInputs);
 
@@ -76,7 +76,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         var newPlayer = Instantiate(playerPrefabs[joinedCount]);
 
-        newPlayer.GetComponent<ILocalMultiplayer>().AssignNewUserInputActions(userInputs);
+        newPlayer.GetComponent<ILocalMultiplayer>().AssignNewUserInputActions(userInputs, user);
 
         joinedCount++;
 

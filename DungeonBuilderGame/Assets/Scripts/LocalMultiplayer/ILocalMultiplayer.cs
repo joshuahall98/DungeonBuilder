@@ -9,5 +9,5 @@ public interface ILocalMultiplayer
     /// <summary>
     /// This method accepts an Input Action Collection and assigns it to the newly created user
     /// </summary>
-    public void AssignNewUserInputActions(IInputActionCollection InputActions);
+    public void AssignNewUserInputActions(IInputActionCollection InputActions, InputUser user);
 }

@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour
             var result =  controller.CheckPlayerHealth();
             listOfHealth.Add(result);
             var name = controller.GetPlayerName();
-            Debug.Log($"{name} has {result} HP");
+            Debug.Log($"Player {name} has {result} HP");
         }
 
         return listOfHealth;

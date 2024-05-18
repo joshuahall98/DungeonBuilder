@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 
-public class PlayerInputController : MonoBehaviour, ILocalMultiplayer
+public class PlayerInputController : MonoBehaviour
 {
      Controls controls;
 
-    public void AssignNewUserInputActions(IInputActionCollection inputActions)
+    public void AssignInputActions(IInputActionCollection inputActions)
     {
         controls = (Controls)inputActions;
-        
+
         controls.PlayerControls.DoThing.performed += LogResult;
 
         EnablePlayerControls();

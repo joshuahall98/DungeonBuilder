@@ -7,7 +7,7 @@ public class UserControls : MonoBehaviour, IUserControls
 {
     public IInputActionCollection CreateNewUserControls()
     {
-        Controls controls = new Controls();
+        var controls = new Controls();
 
         return controls;
     }
