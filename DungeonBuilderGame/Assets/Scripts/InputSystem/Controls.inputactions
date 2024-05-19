@@ -6,7 +6,7 @@
             "id": "764d9143-8ee5-46a0-8158-6d26e9295e08",
             "actions": [
                 {
-                    "name": "DoThing",
+                    "name": "ActionButton",
                     "type": "Button",
                     "id": "6d0d41bf-95d6-4631-8b4b-3a80e505dc5b",
                     "expectedControlType": "Button",
@@ -59,7 +59,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "DoThing",
+                    "action": "ActionButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -70,7 +70,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KBM",
-                    "action": "DoThing",
+                    "action": "ActionButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

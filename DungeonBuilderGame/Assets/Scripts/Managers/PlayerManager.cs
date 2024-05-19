@@ -23,12 +23,51 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    public void DisableAllPLayerLobbyControlsAndEnableAllPlayerControls()
+    public int GetNumberOfPlayers()
+    {
+        return playerDataControllers.Count;
+    }
+
+    public GameObject GetPlayerCharacter(int requestID)
+    {
+        GameObject playerCharacter = null;
+
+        foreach (var controller in playerDataControllers)
+        {
+            var playerID = controller.GetPlayerID();
+            if (playerID == requestID) 
+            { 
+                playerCharacter = controller.GetPlayerCharacter(); 
+            }  
+        }
+
+        return playerCharacter;
+    }
+
+    public void DisablePlayerLobbyControls(int requestID)
     {
         foreach (var controller in playerDataControllers)
         {
-            controller.GetPlayerInputController().DisableLobbyControls();
-            controller.GetPlayerInputController().DisableLobbyControls(); 
+            var playerID = controller.GetPlayerID();
+            if (playerID == requestID) { controller.GetPlayerInputController().DisableLobbyControls(); }
+        }
+    }
+
+    public void EnablePlayerControls(int requestID)
+    {
+        foreach (var controller in playerDataControllers)
+        {
+            var playerID = controller.GetPlayerID();
+            if (playerID == requestID) { controller.GetPlayerInputController().EnablePlayerControls(); }
+        }
+    }
+
+    public void DisablePlayerControls(int requestID)
+    {
+        foreach (var controller in playerDataControllers)
+        {
+            var playerID = controller.GetPlayerID();
+            if (playerID == requestID) { controller.GetPlayerInputController().DisablePlayerControls(); }
         }
     }
 

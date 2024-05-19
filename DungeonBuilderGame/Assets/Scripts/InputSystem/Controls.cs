@@ -28,7 +28,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
             ""id"": ""764d9143-8ee5-46a0-8158-6d26e9295e08"",
             ""actions"": [
                 {
-                    ""name"": ""DoThing"",
+                    ""name"": ""ActionButton"",
                     ""type"": ""Button"",
                     ""id"": ""6d0d41bf-95d6-4631-8b4b-3a80e505dc5b"",
                     ""expectedControlType"": ""Button"",
@@ -81,7 +81,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""DoThing"",
+                    ""action"": ""ActionButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -92,7 +92,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KBM"",
-                    ""action"": ""DoThing"",
+                    ""action"": ""ActionButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -203,7 +203,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
 }");
         // PlayerControls
         m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
-        m_PlayerControls_DoThing = m_PlayerControls.FindAction("DoThing", throwIfNotFound: true);
+        m_PlayerControls_ActionButton = m_PlayerControls.FindAction("ActionButton", throwIfNotFound: true);
         m_PlayerControls_MoveNorth = m_PlayerControls.FindAction("MoveNorth", throwIfNotFound: true);
         m_PlayerControls_MoveEast = m_PlayerControls.FindAction("MoveEast", throwIfNotFound: true);
         m_PlayerControls_MoveWest = m_PlayerControls.FindAction("MoveWest", throwIfNotFound: true);
@@ -270,7 +270,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     // PlayerControls
     private readonly InputActionMap m_PlayerControls;
     private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
-    private readonly InputAction m_PlayerControls_DoThing;
+    private readonly InputAction m_PlayerControls_ActionButton;
     private readonly InputAction m_PlayerControls_MoveNorth;
     private readonly InputAction m_PlayerControls_MoveEast;
     private readonly InputAction m_PlayerControls_MoveWest;
@@ -279,7 +279,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         private @Controls m_Wrapper;
         public PlayerControlsActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DoThing => m_Wrapper.m_PlayerControls_DoThing;
+        public InputAction @ActionButton => m_Wrapper.m_PlayerControls_ActionButton;
         public InputAction @MoveNorth => m_Wrapper.m_PlayerControls_MoveNorth;
         public InputAction @MoveEast => m_Wrapper.m_PlayerControls_MoveEast;
         public InputAction @MoveWest => m_Wrapper.m_PlayerControls_MoveWest;
@@ -293,9 +293,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_PlayerControlsActionsCallbackInterface != null)
             {
-                @DoThing.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDoThing;
-                @DoThing.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDoThing;
-                @DoThing.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDoThing;
+                @ActionButton.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
+                @ActionButton.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
+                @ActionButton.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
                 @MoveNorth.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMoveNorth;
                 @MoveNorth.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMoveNorth;
                 @MoveNorth.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMoveNorth;
@@ -312,9 +312,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @DoThing.started += instance.OnDoThing;
-                @DoThing.performed += instance.OnDoThing;
-                @DoThing.canceled += instance.OnDoThing;
+                @ActionButton.started += instance.OnActionButton;
+                @ActionButton.performed += instance.OnActionButton;
+                @ActionButton.canceled += instance.OnActionButton;
                 @MoveNorth.started += instance.OnMoveNorth;
                 @MoveNorth.performed += instance.OnMoveNorth;
                 @MoveNorth.canceled += instance.OnMoveNorth;
@@ -384,7 +384,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     }
     public interface IPlayerControlsActions
     {
-        void OnDoThing(InputAction.CallbackContext context);
+        void OnActionButton(InputAction.CallbackContext context);
         void OnMoveNorth(InputAction.CallbackContext context);
         void OnMoveEast(InputAction.CallbackContext context);
         void OnMoveWest(InputAction.CallbackContext context);

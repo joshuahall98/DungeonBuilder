@@ -10,6 +10,6 @@ public class LocalPlayerCreation : MonoBehaviour, ILocalMultiplayer
     {
         GetComponent<PlayerInputController>().SetInputActions(inputActions);
 
-        GetComponent<PlayerDataController>().SetInputUserData(user);
+        GetComponent<PlayerDataController>().SetPlayerInputUserData(user);
     }
 }

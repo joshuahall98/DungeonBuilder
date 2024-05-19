@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,17 +10,21 @@ public class PlayerInputController : MonoBehaviour
      Controls controls;
 
     PlayerDataController dataController;
+    PlayerMovement playerMovement;
+
+    public event Action actionButtonEvent;
 
     private void Start()
     {
         dataController = GetComponent<PlayerDataController>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     public void SetInputActions(IInputActionCollection inputActions)
     {
         controls = (Controls)inputActions;
 
-        controls.PlayerControls.DoThing.performed += LogResult;
+        controls.PlayerControls.ActionButton.performed += ActionButton;
         controls.PlayerControls.MoveNorth.performed += MoveNorth;
         controls.PlayerControls.MoveEast.performed += MoveEast;
         controls.PlayerControls.MoveWest.performed += MoveWest;
@@ -31,10 +36,11 @@ public class PlayerInputController : MonoBehaviour
     }
 
     #region -- PlayerControls --
-
-    void LogResult(InputAction.CallbackContext input)
+     
+    
+    void ActionButton(InputAction.CallbackContext input)
     {
-        //PlayerManager.playerManagerInstance.WhatIsOtherPlayerHealth();
+        actionButtonEvent?.Invoke();
     }
 
     void MoveNorth(InputAction.CallbackContext input)
@@ -71,8 +77,7 @@ public class PlayerInputController : MonoBehaviour
 
     void StartGame(InputAction.CallbackContext input)
     {
-        PlayerManager.playerManagerInstance.DisableAllPLayerLobbyControlsAndEnableAllPlayerControls();
-
+        GameManager.gameManagerInstance.StartGame();
     }
 
     #endregion

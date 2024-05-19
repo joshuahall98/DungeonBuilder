@@ -8,14 +8,38 @@ public class DiceRollManager : MonoBehaviour
 {
     [SerializeField] private List<ObjectPool<int>> sixSidedOneToThreeDie = new List<ObjectPool<int>>();
 
-    DiceRollManager diceRollManagerInstance;
+    public static DiceRollManager diceRollManagerInstance;
+
+    int activeDie = 1;
 
     private void Awake()
     {
         diceRollManagerInstance = this;
     }
 
-    public int RollSixSidedOneToThreeDie()
+    public void SetActiveDie(int die)
+    {
+        activeDie = die;
+    }
+
+    public int RollActiveDie()
+    {
+        var result = 0;
+
+        switch (activeDie)
+        {
+            case 1:
+                result = RollSixSidedOneToThreeDie();
+                break;
+            default:
+                result = 0;
+                break;
+        }
+
+        return result;
+    }
+
+    private int RollSixSidedOneToThreeDie()
     {
         var result  = RandomUtility.ObjectPoolCalculator(sixSidedOneToThreeDie);
 
