@@ -1,15 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
-using UnityEngine.SocialPlatforms;
+
+[Serializable]
+public class MultiplayerUI
+{
+    public MultiplayerEventSystem multiplayerEventSystem;
+    public InputSystemUIInputModule inputSystemUIInputModules;
+}
 
 public class LocalMultiplayerLobby : MonoBehaviour
 {
+    [Tooltip("The prefabs placed in this list must contain a class that implements the ILocalMultiplayer interface.")]
     [SerializeField] List<GameObject> playerPrefabs = new List<GameObject>();
+    [Tooltip("The gameobjects placed in this list must contain the following components: MultiplayerEventSystem, InputSystemUIInputModule.")]
+    [SerializeField] List<MultiplayerUI> multiplayerUIs = new List<MultiplayerUI>();
+
+    [Header ("Control Schemes")]
     [SerializeField] string gamepadControlScheme;
     [SerializeField] string keyboardAndMouseControlScheme;
     List<InputDevice> previousInputDevices = new List<InputDevice>();
@@ -22,13 +34,14 @@ public class LocalMultiplayerLobby : MonoBehaviour
     void Awake()
     {
         userControls = GetComponent<IUserControls>();
-        maxPlayers = playerPrefabs.Count;
+        maxPlayers = (int)MathF.Min(playerPrefabs.Count, multiplayerUIs.Count);
 
         // Bind joinAction to any button press.
         joinAction = new InputAction(binding: "/*/<button>");
         joinAction.performed += JoinPlayer;
 
         BeginJoining();
+        
     }
 
     /// <summary>
@@ -48,14 +61,11 @@ public class LocalMultiplayerLobby : MonoBehaviour
         if (device is Mouse || device is Keyboard)
         {
             controlScheme = keyboardAndMouseControlScheme;
-            previousInputDevices.Add(Keyboard.current);
-            previousInputDevices.Add(Mouse.current);
             inputDevices.Add(Keyboard.current);
             inputDevices.Add(Mouse.current);
         }
         else
         {
-            previousInputDevices.Add(device);
             inputDevices.Add(device);
         }
 
@@ -64,9 +74,10 @@ public class LocalMultiplayerLobby : MonoBehaviour
         foreach (InputDevice inputDevice in inputDevices)
         {
             InputUser.PerformPairingWithDevice(inputDevice, user);
+            previousInputDevices.Add(inputDevice);
         }
 
-        var userInputs = userControls.CreateNewUserControls();
+        var userInputs = userControls.CreateNewIInputActionCollection();
 
         user.AssociateActionsWithUser(userInputs);
 
@@ -76,8 +87,11 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         var newPlayer = Instantiate(playerPrefabs[joinedCount]);
 
-        newPlayer.GetComponent<ILocalMultiplayer>().AssignNewUserInputActions(userInputs, user);
+        var localMultiplayerInterface = newPlayer.GetComponent<ILocalMultiplayer>();
 
+        localMultiplayerInterface.ProvideUIInputModule(multiplayerUIs[joinedCount]);
+        localMultiplayerInterface.ProvideNewUserInputActions(userInputs, user);
+        
         joinedCount++;
 
         if (joinedCount >= maxPlayers)

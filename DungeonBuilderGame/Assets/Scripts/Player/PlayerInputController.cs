@@ -3,26 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
 
 public class PlayerInputController : MonoBehaviour
 {
-     Controls controls;
+    Controls controls;
+    InputSystemUIInputModule inputSystemUIInputModule;
+    MultiplayerEventSystem multiplayerEventSystem;
 
     PlayerDataController dataController;
     PlayerMovement playerMovement;
 
     public event Action actionButtonEvent;
 
-    private void Start()
+    private void Awake()
     {
         dataController = GetComponent<PlayerDataController>();
         playerMovement = GetComponent<PlayerMovement>();
     }
 
+    public void MapInputActionsToUI(MultiplayerUI multiplayerUI)
+    {
+        inputSystemUIInputModule = multiplayerUI.inputSystemUIInputModules;
+        multiplayerEventSystem = multiplayerUI.multiplayerEventSystem;
+    }
+
     public void SetInputActions(IInputActionCollection inputActions)
     {
         controls = (Controls)inputActions;
+
+        inputSystemUIInputModule.move = InputActionReference.Create(controls.UI.Navigate);
 
         controls.PlayerControls.ActionButton.performed += ActionButton;
         controls.PlayerControls.MoveNorth.performed += MoveNorth;
@@ -82,6 +93,16 @@ public class PlayerInputController : MonoBehaviour
 
     #endregion
 
+    #region -- UI Controls --
+
+    public void SetNewUI(GameObject firstSelectedUIComponent, GameObject rootGameObject)
+    {
+        multiplayerEventSystem.firstSelectedGameObject = firstSelectedUIComponent;
+        multiplayerEventSystem.playerRoot = rootGameObject;
+    }
+
+    #endregion
+
     #region -- ENABLE AND DISABLE INPUT ACTIONS --
 
     public void EnableAllControls()
@@ -114,6 +135,16 @@ public class PlayerInputController : MonoBehaviour
     public void DisablePlayerControls()
     {
         controls.PlayerControls.Disable();
+    }
+
+    public void EnableUIControls()
+    {
+        inputSystemUIInputModule.enabled = true;
+    }
+
+    public void DisableUIControls()
+    {
+        inputSystemUIInputModule.enabled = false;
     }
 
     private void OnDisable()

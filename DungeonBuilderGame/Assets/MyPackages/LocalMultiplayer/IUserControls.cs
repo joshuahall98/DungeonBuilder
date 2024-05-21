@@ -8,5 +8,5 @@ public interface IUserControls
     /// <summary>
     /// This method returns the InputActionCollection generated from the InputActionMap
     /// </summary>
-    public IInputActionCollection CreateNewUserControls();
+    public IInputActionCollection CreateNewIInputActionCollection();
 }

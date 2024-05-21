@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class UserControls : MonoBehaviour, IUserControls
 {
-    public IInputActionCollection CreateNewUserControls()
+    public IInputActionCollection CreateNewIInputActionCollection()
     {
         var controls = new Controls();
 
