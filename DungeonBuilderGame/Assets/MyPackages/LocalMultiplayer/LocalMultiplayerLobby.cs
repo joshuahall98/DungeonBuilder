@@ -85,6 +85,8 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         userInputs.Enable();
 
+        GetComponent<ILocalMultiplayerLobbyUI>().EnableUI(joinedCount);
+
         var newPlayer = Instantiate(playerPrefabs[joinedCount]);
 
         var localMultiplayerInterface = newPlayer.GetComponent<ILocalMultiplayer>();
