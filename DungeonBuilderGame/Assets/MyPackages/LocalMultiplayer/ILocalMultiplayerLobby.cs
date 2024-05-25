@@ -6,5 +6,13 @@ using UnityEngine.InputSystem.UI;
 
 public interface ILocalMultiplayerLobby
 {
-    public void SetupPlayerUIControls(IInputActionCollection inputActions, MultiplayerEventSystem multiplayerEventSystem, InputSystemUIInputModule inputSystemUIInputModule, GameObject playerPanel);
+    /// <summary>
+    /// Passes on the required information to setup UI controls for lobby players.
+    /// </summary>
+    public void SetupPlayerUIControls(IInputActionCollection inputActions, MultiplayerEventSystem multiplayerEventSystem, InputSystemUIInputModule inputSystemUIInputModule);
+
+    /// <summary>
+    /// This interface isn't required, but can be used to create player panels (To show a new player has joined the lobby)
+    /// </summary>
+    public void SetupPlayerPanel(GameObject playerPanel);
 }

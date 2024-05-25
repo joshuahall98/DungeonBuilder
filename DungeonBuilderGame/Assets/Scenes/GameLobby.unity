@@ -779,9 +779,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobbyPlayerPrefab: {fileID: 6486253245149023461, guid: 2494b3ffccdf37b448b7c22a1f3d995d, type: 3}
   multiplayerEventSystemPrefab: {fileID: 4904121339363706136, guid: 2e3a96b21d3296d44b70517b6614f61f, type: 3}
-  maxPlayers: 4
+  maxPlayers: 2
   gamepadControlScheme: Gamepad
   keyboardAndMouseControlScheme: KBM
+  joinActionGamepad: <Gamepad>/<button>
+  joinActionKeyboard: <Keyboard>/<button>
+  joinActionMouse: <Mouse>/<button>
+  leaveActionGamepad: <Gamepad>/buttonEast
+  leaveActionKeyboard: <Keyboard>/escape
+  leaveActionMouse: <Mouse>/rightButton
 --- !u!4 &1500456036
 Transform:
   m_ObjectHideFlags: 0

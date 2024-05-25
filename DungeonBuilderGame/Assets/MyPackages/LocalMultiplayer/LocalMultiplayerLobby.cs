@@ -44,7 +44,6 @@ public class LocalMultiplayerLobby : MonoBehaviour
     InputAction leaveAction;
     int joinedCount;
     
-
     IUserControls userControls;
     ILocalMultiplayerLobbyUI localMultiplayerLobbyUI;
 
@@ -66,7 +65,6 @@ public class LocalMultiplayerLobby : MonoBehaviour
         leaveAction.started += LeaveLobby;
 
         BeginJoining();
-        
     }
 
     /// <summary>
@@ -74,6 +72,11 @@ public class LocalMultiplayerLobby : MonoBehaviour
     /// </summary>
     void JoinLobby(InputAction.CallbackContext context)
     {
+        if (joinedCount >= maxPlayers)
+        {
+            return;
+        }
+
         var device = context.control.device;
 
         var inputDevices = new List<InputDevice>();
@@ -122,12 +125,17 @@ public class LocalMultiplayerLobby : MonoBehaviour
         var multiplayerEventSystem = multiplayerEventSystemObj.GetComponent<MultiplayerEventSystem>();
         var inputSystemUIInputModule = multiplayerEventSystemObj.GetComponent<InputSystemUIInputModule>();
 
-        newLobbyPlayer.GetComponent<ILocalMultiplayerLobby>().SetupPlayerUIControls(userInputActions, multiplayerEventSystem, inputSystemUIInputModule, playerPanel);
+        var localMultiplayerLobby = newLobbyPlayer.GetComponent<ILocalMultiplayerLobby>();
 
+        localMultiplayerLobby.SetupPlayerUIControls(userInputActions, multiplayerEventSystem, inputSystemUIInputModule);
+
+        if(playerPanel != null)
+        {
+            localMultiplayerLobby.SetupPlayerPanel(playerPanel);
+        }
+        
         joinedCount++;
 
-        if (joinedCount >= maxPlayers)
-            EndJoining();
     }
 
 
@@ -138,7 +146,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
     {
         var device = context.control.device;
 
-        if (InputUser.FindUserPairedToDevice(device).Value == null)
+        if (InputUser.FindUserPairedToDevice(device) == null)
         {
             return;
         }

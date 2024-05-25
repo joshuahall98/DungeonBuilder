@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
-public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalMultiplayerLobby 
+public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalMultiplayerLobby
 {
     Controls controls;
 
     InputSystemUIInputModule _inputSystemUIInputModule;
     MultiplayerEventSystem _multiplayerEventSystem;
 
-    public void SetupPlayerUIControls(IInputActionCollection inputActions, MultiplayerEventSystem multiplayerEventSystem, InputSystemUIInputModule inputSystemUIInputModule, GameObject playerPanel)
+    public void SetupPlayerUIControls(IInputActionCollection inputActions, MultiplayerEventSystem multiplayerEventSystem, InputSystemUIInputModule inputSystemUIInputModule)
     {
         controls = (Controls)inputActions;
 
@@ -21,10 +21,11 @@ public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalMultiplayerL
         _inputSystemUIInputModule.submit = InputActionReference.Create(controls.UI.Submit);
 
         _multiplayerEventSystem = multiplayerEventSystem;
+    }
 
+    public void SetupPlayerPanel(GameObject playerPanel)
+    {
         _multiplayerEventSystem.playerRoot = playerPanel;
         _multiplayerEventSystem.firstSelectedGameObject = playerPanel.GetComponent<LocalPlayerPanel>().GetReadyUpBtn().gameObject;
     }
-
-
 }
