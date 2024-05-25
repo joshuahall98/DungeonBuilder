@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface ILocalMultiplayerLobbyUI
 {
-    public void EnableUI(int playerIndex);
+    public GameObject CreatePlayerUI();
+
+    public void DestroyPlayerUI(int playerIndex, int maxPlayers);
 }

@@ -25,7 +25,7 @@ public class PlayerInputController : MonoBehaviour
 
     public void MapInputActionsToUI(MultiplayerUI multiplayerUI)
     {
-        inputSystemUIInputModule = multiplayerUI.inputSystemUIInputModules;
+        inputSystemUIInputModule = multiplayerUI.inputSystemUIInputModule;
         multiplayerEventSystem = multiplayerUI.multiplayerEventSystem;
     }
 
