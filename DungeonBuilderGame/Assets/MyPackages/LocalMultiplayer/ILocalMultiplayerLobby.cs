@@ -12,7 +12,7 @@ public interface ILocalMultiplayerLobby
     public void SetupPlayerUIControls(IInputActionCollection inputActions, MultiplayerEventSystem multiplayerEventSystem, InputSystemUIInputModule inputSystemUIInputModule);
 
     /// <summary>
-    /// This interface isn't required, but can be used to create player panels (To show a new player has joined the lobby)
+    /// This method isn't required, but can be used to create player panels (To show a new player has joined the lobby)
     /// </summary>
     public void SetupPlayerPanel(GameObject playerPanel);
 }

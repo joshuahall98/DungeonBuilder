@@ -144,6 +144,12 @@ public class LocalMultiplayerLobby : MonoBehaviour
     /// </summary>
     void LeaveLobby(InputAction.CallbackContext context)
     {
+        if(joinedCount <= 0)
+        {
+            //load main menu scene
+            return;
+        }
+
         var device = context.control.device;
 
         if (InputUser.FindUserPairedToDevice(device) == null)
