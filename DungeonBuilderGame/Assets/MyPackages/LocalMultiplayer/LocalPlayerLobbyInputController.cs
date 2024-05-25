@@ -18,6 +18,7 @@ public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalMultiplayerL
         _inputSystemUIInputModule = inputSystemUIInputModule;
 
         _inputSystemUIInputModule.move = InputActionReference.Create(controls.UI.Navigate);
+        _inputSystemUIInputModule.submit = InputActionReference.Create(controls.UI.Submit);
 
         _multiplayerEventSystem = multiplayerEventSystem;
 

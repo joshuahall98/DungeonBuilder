@@ -15,24 +15,28 @@ public class MultiplayerUI
 }
 
 //TODO: Make player 1 kill lobby on exit
-//TODO: Create the inputs that will create and remove players
+//TODO: Create the players
 
 
 //This script handles the creation of a local multiplayer lobby with 1 keyboard and mouse and any number of controllers.
 public class LocalMultiplayerLobby : MonoBehaviour
 {
-    [Tooltip("The prefabs placed in this list must contain a class that implements the ILocalMultiplayer interface.")]
-    //[SerializeField] List<GameObject> lobbyPlayerPrefabs = new List<GameObject>();
     [SerializeField] GameObject lobbyPlayerPrefab;
     [SerializeField] GameObject multiplayerEventSystemPrefab;
     [SerializeField] int maxPlayers;
-    //[Tooltip("The gameobjects placed in this list must contain the following components: MultiplayerEventSystem, InputSystemUIInputModule.")]
-    // [SerializeField] List<MultiplayerUI> multiplayerUIs = new List<MultiplayerUI>();
 
     [Header ("Control Schemes")]
     [SerializeField] string gamepadControlScheme;
     [SerializeField] string keyboardAndMouseControlScheme;
-    
+
+    [Header("Input Bindings")]
+    [SerializeField] string joinActionGamepad = "<Gamepad>/<button>";
+    [SerializeField] string joinActionKeyboard = "<Keyboard>/<button>";
+    [SerializeField] string joinActionMouse = "<Mouse>/<button>";
+    [SerializeField] string leaveActionGamepad = "<Gamepad>/buttonEast";
+    [SerializeField] string leaveActionKeyboard = "<Keyboard>/escape";
+    [SerializeField] string leaveActionMouse = "<Mouse>/rightButton";
+
     List<InputDevice> inputDevicesPairedWithUsers = new List<InputDevice>();
     List<GameObject> currentLobbyPlayers = new List<GameObject>();
     List<GameObject> multiplayerEventSystems = new List<GameObject>();
@@ -48,22 +52,25 @@ public class LocalMultiplayerLobby : MonoBehaviour
     {
         userControls = GetComponent<IUserControls>();
         localMultiplayerLobbyUI = GetComponent<ILocalMultiplayerLobbyUI>();
-       // maxPlayers = lobbyPlayerPrefabs.Count;
-        //maxPlayers = (int)MathF.Min(lobbyPlayerPrefabs.Count, multiplayerUIs.Count);
 
         // Bind joinAction to any button press.
-        joinAction = new InputAction(binding: "/*/<button>");
-        joinAction.performed += JoinLobby;
+        joinAction = new InputAction(binding: joinActionGamepad);
+        joinAction.AddBinding(joinActionKeyboard);
+        joinAction.AddBinding(joinActionMouse);
+        joinAction.started += JoinLobby;
 
-        leaveAction = new InputAction(binding: "<Gamepad>/buttonEast");
-        leaveAction.performed += LeaveLobby;
+        // Bind leaveAction to specific button press.
+        leaveAction = new InputAction(binding: leaveActionGamepad);
+        leaveAction.AddBinding(leaveActionKeyboard);
+        leaveAction.AddBinding(leaveActionMouse);
+        leaveAction.started += LeaveLobby;
 
         BeginJoining();
         
     }
 
     /// <summary>
-    /// Call this method to add a player to the game
+    /// Call this method to add a player to the lobby
     /// </summary>
     void JoinLobby(InputAction.CallbackContext context)
     {
@@ -117,20 +124,24 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         newLobbyPlayer.GetComponent<ILocalMultiplayerLobby>().SetupPlayerUIControls(userInputActions, multiplayerEventSystem, inputSystemUIInputModule, playerPanel);
 
-        //var localMultiplayerInterface = newPlayer.GetComponent<ILocalMultiplayer>();
-
-        /*localMultiplayerInterface.ProvideUIInputModule(multiplayerUIs[joinedCount]);
-        localMultiplayerInterface.ProvideNewUserInputActions(userInputs, user);*/
-
         joinedCount++;
 
         if (joinedCount >= maxPlayers)
             EndJoining();
     }
 
+
+    /// <summary>
+    /// Call this method to remove a player from the lobby
+    /// </summary>
     void LeaveLobby(InputAction.CallbackContext context)
     {
         var device = context.control.device;
+
+        if (InputUser.FindUserPairedToDevice(device).Value == null)
+        {
+            return;
+        }
 
         var userToRemove = InputUser.FindUserPairedToDevice(device).Value;
 
@@ -161,7 +172,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
         Destroy(playerToRemove);
 
         var multiplayerEventSystemToRemove = multiplayerEventSystems[userIndex];
-        currentLobbyPlayers.RemoveAt(userIndex);
+        multiplayerEventSystems.RemoveAt(userIndex);
         Destroy(multiplayerEventSystemToRemove);
 
         joinedCount--;
@@ -183,12 +194,11 @@ public class LocalMultiplayerLobby : MonoBehaviour
     public void EndJoining()
     {
         joinAction.Disable();
+        leaveAction.Disable();
     }
 
     void OnDisable()
     {
         EndJoining();
     }
-
-    
 }
