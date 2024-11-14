@@ -25,6 +25,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
     [SerializeField] GameObject multiplayerEventSystemPrefab;
     [SerializeField] int maxPlayers;
 
+    //Control Schemes are defined in the input actions asset
     [Header ("Control Schemes")]
     [SerializeField] string gamepadControlScheme;
     [SerializeField] string keyboardAndMouseControlScheme;
@@ -35,7 +36,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
     [SerializeField] string joinActionMouse = "<Mouse>/<button>";
     [SerializeField] string leaveActionGamepad = "<Gamepad>/buttonEast";
     [SerializeField] string leaveActionKeyboard = "<Keyboard>/escape";
-    [SerializeField] string leaveActionMouse = "<Mouse>/rightButton";
+    //[SerializeField] string leaveActionMouse = "<Mouse>/rightButton";
 
     List<InputDevice> inputDevicesPairedWithUsers = new List<InputDevice>();
     List<GameObject> currentLobbyPlayers = new List<GameObject>();
@@ -50,7 +51,18 @@ public class LocalMultiplayerLobby : MonoBehaviour
     void Awake()
     {
         userControls = GetComponent<IUserControls>();
+
+        if(userControls == null )
+        {
+            Debug.LogError($"No IUserControls componenet attached to this gameobject, please attach component");
+        }
+
         localMultiplayerLobbyUI = GetComponent<ILocalMultiplayerLobbyUI>();
+
+        if (localMultiplayerLobbyUI == null)
+        {
+            Debug.LogError($"No ILocalMultiplayerLobbyUI componenet attached to this gameobject, please attach component");
+        }
 
         // Bind joinAction to any button press.
         joinAction = new InputAction(binding: joinActionGamepad);
@@ -61,7 +73,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
         // Bind leaveAction to specific button press.
         leaveAction = new InputAction(binding: leaveActionGamepad);
         leaveAction.AddBinding(leaveActionKeyboard);
-        leaveAction.AddBinding(leaveActionMouse);
+       // leaveAction.AddBinding(leaveActionMouse);
         leaveAction.started += LeaveLobby;
 
         BeginJoining();
@@ -84,22 +96,11 @@ public class LocalMultiplayerLobby : MonoBehaviour
         if (inputDevicesPairedWithUsers.Contains(device))
             return;
 
-        string controlScheme = gamepadControlScheme;
+        string controlScheme = ControlSchemeSetup(device, inputDevices);
 
-        if (device is Mouse || device is Keyboard)
-        {
-            controlScheme = keyboardAndMouseControlScheme;
-            inputDevices.Add(Keyboard.current);
-            inputDevices.Add(Mouse.current);
-        }
-        else
-        {
-            inputDevices.Add(device);
-        }
+        var user = InputUser.CreateUserWithoutPairedDevices();
 
-        InputUser user = InputUser.CreateUserWithoutPairedDevices();
-
-        foreach (InputDevice inputDevice in inputDevices)
+        foreach (var inputDevice in inputDevices)
         {
             InputUser.PerformPairingWithDevice(inputDevice, user);
             inputDevicesPairedWithUsers.Add(inputDevice);
@@ -125,19 +126,18 @@ public class LocalMultiplayerLobby : MonoBehaviour
         var multiplayerEventSystem = multiplayerEventSystemObj.GetComponent<MultiplayerEventSystem>();
         var inputSystemUIInputModule = multiplayerEventSystemObj.GetComponent<InputSystemUIInputModule>();
 
-        var localMultiplayerLobby = newLobbyPlayer.GetComponent<ILocalMultiplayerLobby>();
+        var localLobbyPlayer = newLobbyPlayer.GetComponent<ILocalPlayerSetup>();
 
-        localMultiplayerLobby.SetupPlayerUIControls(userInputActions, multiplayerEventSystem, inputSystemUIInputModule);
+        localLobbyPlayer.SetupPlayerUIControls(userInputActions, inputSystemUIInputModule);
 
-        if(playerPanel != null)
+        if (playerPanel != null)
         {
-            localMultiplayerLobby.SetupPlayerPanel(playerPanel);
+            localLobbyPlayer.SetupPlayerPanel(playerPanel, multiplayerEventSystem);
         }
-        
+
         joinedCount++;
 
     }
-
 
     /// <summary>
     /// Call this method to remove a player from the lobby
@@ -190,6 +190,24 @@ public class LocalMultiplayerLobby : MonoBehaviour
         Destroy(multiplayerEventSystemToRemove);
 
         joinedCount--;
+    }
+
+    private string ControlSchemeSetup(InputDevice device, List<InputDevice> inputDevices)
+    {
+        string controlScheme = gamepadControlScheme;
+
+        if (device is Mouse || device is Keyboard)
+        {
+            controlScheme = keyboardAndMouseControlScheme;
+            inputDevices.Add(Keyboard.current);
+            inputDevices.Add(Mouse.current);
+        }
+        else
+        {
+            inputDevices.Add(device);
+        }
+
+        return controlScheme;
     }
 
 
