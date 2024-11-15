@@ -110,7 +110,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         currentLobbyPlayers.Add(newLobbyPlayer);
 
-        var userInputActions = userControls.CreateNewIInputActionCollection();
+        var userInputActions = userControls.CreateNewInputActionAsset();
 
         user.AssociateActionsWithUser(userInputActions);
 

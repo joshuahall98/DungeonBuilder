@@ -6,7 +6,10 @@ using UnityEngine.InputSystem;
 public interface IUserControls
 {
     /// <summary>
+    /// /// DEPRECATED
     /// This method returns the InputActionCollection generated from the InputActionMap
     /// </summary>
     public IInputActionCollection CreateNewIInputActionCollection();
+
+    public InputActionAsset CreateNewInputActionAsset();
 }

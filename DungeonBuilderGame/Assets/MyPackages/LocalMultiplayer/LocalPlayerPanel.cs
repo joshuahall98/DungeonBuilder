@@ -10,6 +10,8 @@ public class LocalPlayerPanel : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI playerIDTxt;
     [SerializeField] Button readyUpBtn;
+
+    bool ready = false;
     
     public void SetPlayerIDText(string playerID)
     {
@@ -23,6 +25,10 @@ public class LocalPlayerPanel : MonoBehaviour
 
     public void ReadyUp()
     {
-        Debug.Log("ready Up");
+        if (!ready)
+        {
+            ready = true;
+            Debug.Log("Ready");
+        }
     }
 }
