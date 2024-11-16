@@ -7,10 +7,8 @@ using UnityEngine.InputSystem.UI;
 public interface ILocalPlayerSetup
 {
     /// <summary>
-    /// DEPRECATED
     /// Passes on the required information to setup UI controls for lobby players.
     /// </summary>
-    public void SetupPlayerUIControls(IInputActionCollection inputActions, InputSystemUIInputModule inputSystemUIInputModule);
     public void SetupPlayerUIControls(InputActionAsset inputActions, InputSystemUIInputModule inputSystemUIInputModule);
 
     /// <summary>

@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
-using UnityEngine.InputSystem.Users;
+
 
 [Serializable]
 public class MultiplayerUI
@@ -17,16 +16,15 @@ public class MultiplayerUI
 //TODO: Make player 1 kill lobby on exit
 //TODO: Create the players
 
-
-//This script handles the creation of a local multiplayer lobby with 1 keyboard and mouse and any number of controllers.
 public class LocalMultiplayerLobby : MonoBehaviour
 {
     [SerializeField] GameObject lobbyPlayerPrefab;
     [SerializeField] GameObject multiplayerEventSystemPrefab;
-    [SerializeField] int maxPlayers;
+    [SerializeField] int maxPlayers = 2;
+    [SerializeField] InputActionAsset inputActionAsset;
 
     //Control Schemes are defined in the input actions asset
-    [Header ("Control Schemes")]
+    [Header("Control Schemes")]
     [SerializeField] string gamepadControlScheme;
     [SerializeField] string keyboardAndMouseControlScheme;
 
@@ -36,27 +34,18 @@ public class LocalMultiplayerLobby : MonoBehaviour
     [SerializeField] string joinActionMouse = "<Mouse>/<button>";
     [SerializeField] string leaveActionGamepad = "<Gamepad>/buttonEast";
     [SerializeField] string leaveActionKeyboard = "<Keyboard>/escape";
-    //[SerializeField] string leaveActionMouse = "<Mouse>/rightButton";
 
-    List<InputDevice> inputDevicesPairedWithUsers = new List<InputDevice>();
     List<GameObject> currentLobbyPlayers = new List<GameObject>();
     List<GameObject> multiplayerEventSystems = new List<GameObject>();
+
     InputAction joinAction;
     InputAction leaveAction;
     int joinedCount;
-    
-    IUserControls userControls;
+
     ILocalMultiplayerLobbyUI localMultiplayerLobbyUI;
 
     void Awake()
     {
-        userControls = GetComponent<IUserControls>();
-
-        if(userControls == null )
-        {
-            Debug.LogError($"No IUserControls componenet attached to this gameobject, please attach component");
-        }
-
         localMultiplayerLobbyUI = GetComponent<ILocalMultiplayerLobbyUI>();
 
         if (localMultiplayerLobbyUI == null)
@@ -73,50 +62,32 @@ public class LocalMultiplayerLobby : MonoBehaviour
         // Bind leaveAction to specific button press.
         leaveAction = new InputAction(binding: leaveActionGamepad);
         leaveAction.AddBinding(leaveActionKeyboard);
-       // leaveAction.AddBinding(leaveActionMouse);
         leaveAction.started += LeaveLobby;
 
         BeginJoining();
     }
 
-    /// <summary>
-    /// Call this method to add a player to the lobby
-    /// </summary>
-    void JoinLobby(InputAction.CallbackContext context)
+    private void JoinLobby(InputAction.CallbackContext context)
     {
+
         if (joinedCount >= maxPlayers)
         {
             return;
         }
 
-        var device = context.control.device;
+        var tuple = LocalMultiplayerUserCreationSystem.CreateUser(context, inputActionAsset);
 
-        var inputDevices = new List<InputDevice>();
-
-        if (inputDevicesPairedWithUsers.Contains(device))
-            return;
-
-        string controlScheme = ControlSchemeSetup(device, inputDevices);
-
-        var user = InputUser.CreateUserWithoutPairedDevices();
-
-        foreach (var inputDevice in inputDevices)
+        var newUserInputActions = tuple.Item1;
+        var userCreated = tuple.Item2;
+        
+        if (!userCreated)
         {
-            InputUser.PerformPairingWithDevice(inputDevice, user);
-            inputDevicesPairedWithUsers.Add(inputDevice);
+            return;
         }
 
         var newLobbyPlayer = Instantiate(lobbyPlayerPrefab);
 
         currentLobbyPlayers.Add(newLobbyPlayer);
-
-        var userInputActions = userControls.CreateNewInputActionAsset();
-
-        user.AssociateActionsWithUser(userInputActions);
-
-        user.ActivateControlScheme(controlScheme);
-
-        userInputActions.Enable();
 
         var playerPanel = localMultiplayerLobbyUI.CreatePlayerUI();
 
@@ -128,7 +99,7 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         var localLobbyPlayer = newLobbyPlayer.GetComponent<ILocalPlayerSetup>();
 
-        localLobbyPlayer.SetupPlayerUIControls(userInputActions, inputSystemUIInputModule);
+        localLobbyPlayer.SetupPlayerUIControls(newUserInputActions, inputSystemUIInputModule);
 
         if (playerPanel != null)
         {
@@ -136,48 +107,18 @@ public class LocalMultiplayerLobby : MonoBehaviour
         }
 
         joinedCount++;
-
     }
 
-    /// <summary>
-    /// Call this method to remove a player from the lobby
-    /// </summary>
-    void LeaveLobby(InputAction.CallbackContext context)
+    private void LeaveLobby(InputAction.CallbackContext context)
     {
-        if(joinedCount <= 0)
+
+        if (joinedCount <= 0)
         {
             //load main menu scene
             return;
         }
 
-        var device = context.control.device;
-
-        if (InputUser.FindUserPairedToDevice(device) == null)
-        {
-            return;
-        }
-
-        var userToRemove = InputUser.FindUserPairedToDevice(device).Value;
-
-        var userIndex = userToRemove.index;
-
-        userToRemove.actions.Disable();
-
-        userToRemove.UnpairDevicesAndRemoveUser();
-
-        for (int i = inputDevicesPairedWithUsers.Count - 1; i >= 0; i--) 
-        {
-            var pairedDevice = inputDevicesPairedWithUsers[i];
-
-            if ((device is Mouse || device is Keyboard) && (pairedDevice is Mouse || pairedDevice is Keyboard))
-            {
-                inputDevicesPairedWithUsers.Remove(pairedDevice);
-            }
-            else if (pairedDevice == device)
-            {
-                inputDevicesPairedWithUsers.Remove(pairedDevice);
-            }
-        }
+        var userIndex = LocalMultiplayerUserCreationSystem.DeleteUser(context);
 
         localMultiplayerLobbyUI.DestroyPlayerUI(userIndex, maxPlayers);
 
@@ -191,25 +132,6 @@ public class LocalMultiplayerLobby : MonoBehaviour
 
         joinedCount--;
     }
-
-    private string ControlSchemeSetup(InputDevice device, List<InputDevice> inputDevices)
-    {
-        string controlScheme = gamepadControlScheme;
-
-        if (device is Mouse || device is Keyboard)
-        {
-            controlScheme = keyboardAndMouseControlScheme;
-            inputDevices.Add(Keyboard.current);
-            inputDevices.Add(Mouse.current);
-        }
-        else
-        {
-            inputDevices.Add(device);
-        }
-
-        return controlScheme;
-    }
-
 
     /// <summary>
     /// Call this method to turn on the lobby functionality

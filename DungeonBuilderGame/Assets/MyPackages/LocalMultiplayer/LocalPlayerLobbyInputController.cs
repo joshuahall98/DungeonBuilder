@@ -7,16 +7,7 @@ using UnityEngine.InputSystem.UI;
 public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalPlayerSetup
 {
     [SerializeField] InputActionReference submit;
-
-    //DEPREACTED
-    public void SetupPlayerUIControls(IInputActionCollection inputActions, InputSystemUIInputModule inputSystemUIInputModule)
-    {
-        /*controls = (Controls)inputActions;
-
-        inputSystemUIInputModule.move = InputActionReference.Create(controls.UI.Navigate);
-        inputSystemUIInputModule.submit = InputActionReference.Create(controls.UI.Submit);*/
-
-    }
+    //[SerializeField] InputActionReference move;
 
     public void SetupPlayerPanel(GameObject playerPanel, MultiplayerEventSystem multiplayerEventSystem)
     {
@@ -27,5 +18,6 @@ public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalPlayerSetup
     public void SetupPlayerUIControls(InputActionAsset inputActions, InputSystemUIInputModule inputSystemUIInputModule)
     {
         inputSystemUIInputModule.submit = InputActionReference.Create(inputActions.FindAction(submit.name));
+
     }
 }
