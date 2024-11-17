@@ -33,7 +33,6 @@ RectTransform:
   m_Children:
   - {fileID: 5207962692672344123}
   m_Father: {fileID: 5207962693060249902}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -165,7 +164,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5207962691926639035}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -303,7 +301,6 @@ RectTransform:
   - {fileID: 5207962691926639035}
   - {fileID: 4796020255367017470}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -357,7 +354,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5207962693060249903}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e90514a1f3c8864a8d9e6492a56a51f, type: 3}
+  m_Script: {fileID: 11500000, guid: c3d6b43bed954334dbcb575b4e02e67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerIDTxt: {fileID: 4574478623905653056}
@@ -393,7 +390,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5207962693060249902}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}

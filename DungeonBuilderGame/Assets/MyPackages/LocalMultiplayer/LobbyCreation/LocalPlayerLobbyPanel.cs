@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class LocalPlayerLobbyPanel : MonoBehaviour
