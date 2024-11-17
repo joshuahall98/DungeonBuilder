@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
-public class LocalPlayerPanel : MonoBehaviour
+public class LocalPlayerLobbyPanel : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI playerIDTxt;
     [SerializeField] Button readyUpBtn;

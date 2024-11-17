@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
-public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalPlayerSetup
+public class LocalPlayerLobbyInputSetup : MonoBehaviour, ILocalPlayerLobbyInputSetup
 {
     [SerializeField] InputActionReference submit;
     //[SerializeField] InputActionReference move;
@@ -12,7 +12,7 @@ public class LocalPlayerLobbyInputController : MonoBehaviour, ILocalPlayerSetup
     public void SetupPlayerPanel(GameObject playerPanel, MultiplayerEventSystem multiplayerEventSystem)
     {
         multiplayerEventSystem.playerRoot = playerPanel;
-        multiplayerEventSystem.firstSelectedGameObject = playerPanel.GetComponent<LocalPlayerPanel>().GetReadyUpBtn().gameObject;
+        multiplayerEventSystem.firstSelectedGameObject = playerPanel.GetComponent<LocalPlayerLobbyPanel>().GetReadyUpBtn().gameObject;
     }
 
     public void SetupPlayerUIControls(InputActionAsset inputActions, InputSystemUIInputModule inputSystemUIInputModule)

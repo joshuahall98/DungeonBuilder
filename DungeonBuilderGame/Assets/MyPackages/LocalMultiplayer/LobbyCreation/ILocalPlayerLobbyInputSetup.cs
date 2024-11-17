@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
-public interface ILocalPlayerSetup
+public interface ILocalPlayerLobbyInputSetup
 {
     /// <summary>
     /// Passes on the required information to setup UI controls for lobby players.
